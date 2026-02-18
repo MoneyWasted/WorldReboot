@@ -1,7 +1,0 @@
-name: WorldReboot
-version: '${project.version}'
-main: org.japsu.worldreboot.WorldReboot
-api-version: 1.19
-load: STARTUP
-author: Japsu
-description: Regenerates worlds on startup.

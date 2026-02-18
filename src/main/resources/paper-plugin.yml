@@ -1,0 +1,9 @@
+name: WorldReboot
+version: '${project.version}'
+main: com.moneywasted.worldreboot.Main
+api-version: '1.21'
+folia-supported: true
+load: STARTUP
+authors: [ MoneyWasted, Japsu ]
+description: Regenerates Worlds on Server Startup
+website: https://github.com/MoneyWasted/WorldReboot

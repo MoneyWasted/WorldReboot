@@ -5,8 +5,4 @@ Enabled: false
 DisableAfterRegeneration: false
 
 # What worlds you want to re-generate on startup.
-# Comment / uncomment lines as needed.
-WorldsToRegenerate:
-- world
-- world_nether
-- world_the_end
+WorldsToRegenerate: [ world, world_nether, world_the_end ]
