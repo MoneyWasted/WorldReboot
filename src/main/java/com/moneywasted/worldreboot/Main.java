@@ -17,18 +17,16 @@ public final class Main extends JavaPlugin {
 	private static final String CONFIG_ENABLED = "Enabled";
 	private static final String CONFIG_DISABLE_AFTER = "DisableAfterRegeneration";
 	private static final String CONFIG_WORLDS = "WorldsToRegenerate";
-	private static final List<String> CONFIG_DEFAULT_WORLDS = List.of("world", "world_nether", "world_the_end");
+
+	private static Logger logger;
+	private static FileConfiguration config;
 
 	@Override
 	public void onEnable() {
-		Logger pluginLogger = getLogger();
-		FileConfiguration config = getConfig();
+		saveDefaultConfig();
 
-		config.addDefault(CONFIG_ENABLED, false);
-		config.addDefault(CONFIG_DISABLE_AFTER, false);
-		config.addDefault(CONFIG_WORLDS, CONFIG_DEFAULT_WORLDS);
-		config.options().copyDefaults(true);
-		saveConfig();
+		logger = getLogger();
+		config = getConfig();
 
 		if (!config.getBoolean(CONFIG_ENABLED)) {
 			return;
@@ -37,15 +35,15 @@ public final class Main extends JavaPlugin {
 		List<String> worldsToRegenerate = config.getStringList(CONFIG_WORLDS);
 
 		for (String world : worldsToRegenerate) {
-			pluginLogger.warning(String.format("Regenerating World: %s", world));
+			logger.warning(String.format("Regenerating World: %s", world));
 
 			if (!deleteWorldFolderContents(world)) {
-				pluginLogger.severe(String.format("Failed to Fully Regenerate World: %s", world));
+				logger.severe(String.format("Failed to Fully Regenerate World: %s", world));
 			}
 		}
 
 		if (config.getBoolean(CONFIG_DISABLE_AFTER)) {
-			pluginLogger.warning("DisableAfterRegeneration is TRUE, Disabling Plugin!");
+			logger.warning("DisableAfterRegeneration is TRUE, Disabling Plugin!");
 			config.set(CONFIG_ENABLED, false);
 			saveConfig();
 		}
@@ -74,8 +72,8 @@ public final class Main extends JavaPlugin {
 				}
 			}
 		} catch (IOException e) {
-			getLogger().severe(String.format("Error Reading World Folder: %s", worldName));
-			getLogger().severe(String.format("Error Message: %s", e.getMessage()));
+			logger.severe(String.format("Error Reading World Folder: %s", worldName));
+			logger.severe(String.format("Error Message: %s", e.getMessage()));
 			return false;
 		}
 
@@ -97,15 +95,15 @@ public final class Main extends JavaPlugin {
 						Files.delete(p);
 						return true;
 					} catch (IOException e) {
-						getLogger().severe(String.format("Failed to Delete: %s", p));
-						getLogger().severe(String.format("Error Message: %s", e.getMessage()));
+						logger.severe(String.format("Failed to Delete: %s", p));
+						logger.severe(String.format("Error Message: %s", e.getMessage()));
 						return false;
 					}
 				})
 				.reduce(true, Boolean::logicalAnd);
 		} catch (IOException e) {
-			getLogger().severe(String.format("Failed to Walk Path: %s", path));
-			getLogger().severe(String.format("Error Message: %s", e.getMessage()));
+			logger.severe(String.format("Failed to Walk Path: %s", path));
+			logger.severe(String.format("Error Message: %s", e.getMessage()));
 			return false;
 		}
 	}
