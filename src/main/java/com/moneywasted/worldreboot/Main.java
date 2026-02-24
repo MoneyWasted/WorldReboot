@@ -1,5 +1,6 @@
 package com.moneywasted.worldreboot;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,14 +20,15 @@ public final class Main extends JavaPlugin {
 	private static final String CONFIG_WORLDS = "WorldsToRegenerate";
 
 	private static Logger logger;
-	private static FileConfiguration config;
 
 	@Override
 	public void onEnable() {
+		new Metrics(this, 18036);
+
 		saveDefaultConfig();
+		FileConfiguration config = getConfig();
 
 		logger = getLogger();
-		config = getConfig();
 
 		if (!config.getBoolean(CONFIG_ENABLED)) {
 			return;
